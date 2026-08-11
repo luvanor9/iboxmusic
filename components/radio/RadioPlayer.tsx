@@ -77,11 +77,12 @@ export function RadioPlayer() {
         background: '#1E2023',
         border: '1px solid rgba(255,107,43,0.20)',
         borderRadius: 20,
-        padding: '28px 32px',
+        padding: 'clamp(20px, 5vw, 28px) clamp(16px, 6vw, 32px)',
         boxShadow: playing ? '0 0 32px rgba(255,107,43,0.18)' : 'none',
         transition: 'box-shadow 0.4s',
         maxWidth: 500,
         width: '100%',
+        boxSizing: 'border-box',
       }}
     >
       {/* Top row */}
