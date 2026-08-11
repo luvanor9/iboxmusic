@@ -144,7 +144,13 @@ html, body {
   overflow-x: hidden;
 }
 
-/* Navbar mobile — esconde links e deixa só logo + estúdio */
+/* Modo landscape no celular */
+@media (max-height: 500px) and (orientation: landscape) {
+  .hero-section {
+    min-height: auto !important;
+    padding: 20px 16px !important;
+  }
+}
 @media (max-width: 600px) {
   .nav-links { display: none !important; }
   .nav-studio {
