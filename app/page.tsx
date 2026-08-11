@@ -56,13 +56,6 @@ export default function Home() {
           <a href="#programacao" style={navLink} className="nav-links">Programação</a>
           <a href="#chat" style={navLink} className="nav-links">Chat</a>
           <a href="#redes" style={navLink} className="nav-links">Redes</a>
-          <a href="/studio" className="nav-studio" style={{
-            ...navLink,
-            color: '#FF6B2B',
-            border: '1px solid rgba(255,107,43,0.30)',
-            borderRadius: 9999,
-            padding: '4px 14px',
-          }}>🎙 Estúdio</a>
           <div style={{
             background: 'rgba(255,107,43,0.12)',
             border: '1px solid rgba(255,107,43,0.40)',

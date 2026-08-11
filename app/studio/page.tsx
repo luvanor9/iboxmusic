@@ -5,6 +5,117 @@ import type { ScheduleItem } from '@/lib/radio-config';
 import { SCHEDULE as DEFAULT_SCHEDULE } from '@/lib/radio-config';
 import { usePlayer } from '@/components/radio/PlayerContext';
 
+/* ── Senha do Estúdio ─────────────────────────────────────── */
+// Para trocar a senha, altere o valor abaixo:
+const STUDIO_PASSWORD = 'ibox2025';
+
+/* ── Tela de Login ───────────────────────────────────────── */
+function StudioLogin({ onLogin }: { onLogin: () => void }) {
+  const [pw, setPw] = useState('');
+  const [err, setErr] = useState(false);
+  const [show, setShow] = useState(false);
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (pw === STUDIO_PASSWORD) {
+      sessionStorage.setItem('studio_auth', '1');
+      onLogin();
+    } else {
+      setErr(true);
+      setPw('');
+      setTimeout(() => setErr(false), 2000);
+    }
+  };
+
+  return (
+    <div style={{ minHeight: '100vh', background: '#111214', display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: 'Space Grotesk, sans-serif', padding: 24 }}>
+      <div style={{ width: '100%', maxWidth: 380, background: '#1E2023', border: '1px solid rgba(255,107,43,0.20)', borderRadius: 24, padding: '40px 32px', boxShadow: '0 0 60px rgba(255,107,43,0.08)' }}>
+        {/* Logo */}
+        <div style={{ textAlign: 'center', marginBottom: 32 }}>
+          <div style={{ width: 64, height: 64, borderRadius: 16, background: 'rgba(255,107,43,0.10)', border: '1px solid rgba(255,107,43,0.30)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 32, margin: '0 auto 16px' }}>
+            🎙
+          </div>
+          <h1 style={{ fontSize: 22, fontWeight: 700, color: '#F2EDE8', margin: '0 0 4px', letterSpacing: '-0.01em' }}>
+            IBOX <span style={{ color: '#FF6B2B' }}>MUSIC</span>
+          </h1>
+          <p style={{ fontSize: 12, color: '#5C5450', fontFamily: 'JetBrains Mono, monospace', letterSpacing: '0.08em', margin: 0, textTransform: 'uppercase' }}>
+            Área do Locutor
+          </p>
+        </div>
+
+        <form onSubmit={handleSubmit}>
+          <div style={{ marginBottom: 16 }}>
+            <label style={{ display: 'block', fontSize: 12, fontFamily: 'JetBrains Mono, monospace', color: '#9A8F88', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: 8 }}>
+              Senha de Acesso
+            </label>
+            <div style={{ position: 'relative' }}>
+              <input
+                type={show ? 'text' : 'password'}
+                value={pw}
+                onChange={e => setPw(e.target.value)}
+                placeholder="Digite a senha..."
+                autoFocus
+                style={{
+                  width: '100%',
+                  background: '#111214',
+                  border: `1px solid ${err ? 'rgba(255,100,100,0.50)' : 'rgba(255,107,43,0.20)'}`,
+                  borderRadius: 12,
+                  padding: '12px 44px 12px 16px',
+                  color: '#F2EDE8',
+                  fontSize: 15,
+                  fontFamily: 'Space Grotesk, sans-serif',
+                  outline: 'none',
+                  boxSizing: 'border-box',
+                  transition: 'border-color 0.15s',
+                }}
+              />
+              <button
+                type="button"
+                onClick={() => setShow(s => !s)}
+                style={{ position: 'absolute', right: 12, top: '50%', transform: 'translateY(-50%)', background: 'none', border: 'none', color: '#5C5450', cursor: 'pointer', fontSize: 16, padding: 2 }}
+              >
+                {show ? '🙈' : '👁'}
+              </button>
+            </div>
+            {err && (
+              <p style={{ fontSize: 12, color: '#ff6b6b', fontFamily: 'JetBrains Mono, monospace', margin: '8px 0 0', letterSpacing: '0.04em' }}>
+                ⚠ Senha incorreta. Tente novamente.
+              </p>
+            )}
+          </div>
+
+          <button
+            type="submit"
+            style={{
+              width: '100%',
+              padding: '14px 0',
+              borderRadius: 9999,
+              border: 'none',
+              background: '#FF6B2B',
+              color: '#111214',
+              fontSize: 15,
+              fontWeight: 700,
+              fontFamily: 'Space Grotesk, sans-serif',
+              letterSpacing: '0.05em',
+              cursor: 'pointer',
+              boxShadow: '0 0 24px rgba(255,107,43,0.35)',
+              transition: 'all 0.15s',
+            }}
+          >
+            ENTRAR NO ESTÚDIO
+          </button>
+        </form>
+
+        <div style={{ marginTop: 24, textAlign: 'center' }}>
+          <a href="/" style={{ fontSize: 12, color: '#5C5450', fontFamily: 'JetBrains Mono, monospace', textDecoration: 'none', letterSpacing: '0.06em' }}>
+            ← Voltar para a rádio
+          </a>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 /* ── Types ──────────────────────────────────────────────────── */
 interface CallerInfo { id: string; name: string; status: 'waiting' | 'connected' | 'ended'; }
 
@@ -27,6 +138,12 @@ function fmt(s: number) { if (!isFinite(s) || s === 0) return '0:00'; const m = 
 
 /* ════════════════════════════════════════════════════════════ */
 export default function StudioPage() {
+
+  /* ── Auth ── */
+  const [authed, setAuthed] = useState(false);
+  useEffect(() => {
+    if (sessionStorage.getItem('studio_auth') === '1') setAuthed(true);
+  }, []);
 
   /* ── Shared global player ── */
   const player = usePlayer();
@@ -158,6 +275,9 @@ export default function StudioPage() {
     { id: 'calls' as const, label: `Ligações${callers.filter(c => c.status === 'waiting').length ? ` (${callers.filter(c => c.status === 'waiting').length})` : ''}`, icon: '📞' },
   ];
 
+  /* ── Guard ── */
+  if (!authed) return <StudioLogin onLogin={() => setAuthed(true)} />;
+
   /* ════════════════════════════════════════════════════════ */
   return (
     <div style={{ minHeight: '100vh', background: C.bg, color: C.text, fontFamily: 'Space Grotesk, sans-serif', paddingBottom: player.playlist.length > 0 ? 72 : 0 }}>
@@ -184,6 +304,12 @@ export default function StudioPage() {
               NO AR
             </div>
           )}
+          <button
+            onClick={() => { sessionStorage.removeItem('studio_auth'); setAuthed(false); }}
+            style={{ background: 'none', border: '1px solid rgba(255,107,43,0.20)', borderRadius: 9999, padding: '4px 14px', color: C.quiet, fontFamily: 'JetBrains Mono, monospace', fontSize: 11, cursor: 'pointer', letterSpacing: '0.06em' }}
+          >
+            SAIR
+          </button>
         </div>
       </nav>
 
