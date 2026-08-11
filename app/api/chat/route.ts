@@ -13,21 +13,6 @@ export interface ChatMessage {
 const messages: ChatMessage[] = [
   {
     id: '1',
-    name: 'Fã IBOX',
-    message: 'Boa tarde galera! Mandando um salve da Bahia 🎶',
-    type: 'chat',
-    timestamp: new Date(Date.now() - 5 * 60000).toISOString(),
-  },
-  {
-    id: '2',
-    name: 'Maria Silva',
-    message: 'Pode tocar Evidências do Chitãozinho & Xororó?',
-    type: 'request',
-    song: 'Evidências — Chitãozinho & Xororó',
-    timestamp: new Date(Date.now() - 3 * 60000).toISOString(),
-  },
-  {
-    id: '3',
     name: 'João Pedro',
     message: 'Melhor rádio do Brasil! 🔥',
     type: 'chat',
