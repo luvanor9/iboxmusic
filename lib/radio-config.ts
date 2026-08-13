@@ -15,13 +15,13 @@ export const RADIO_CONFIG = {
    * Para Shoutcast: http://seuservidor.com:8000/;stream.mp3
    * Coloque a URL do seu servidor aqui quando estiver configurado.
    */
-  streamUrl: 'https://streams.br10.com.br/iboxmusic',
+  streamUrl: 'http://uk5freenew.listen2myradio.com:17889/;stream.mp3',
 
   /** Fallback caso o stream principal falhe */
-  streamUrlFallback: '',
+  streamUrlFallback: 'http://uk5freenew.listen2myradio.com:17889/',
 
   /** Estação de demonstração (SHOUTcast público para teste) */
-  streamDemo: 'https://streams.br10.com.br/iboxmusic',
+  streamDemo: 'http://uk5freenew.listen2myradio.com:17889/;stream.mp3',
 
   socials: {
     /**
